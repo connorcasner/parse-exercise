@@ -15,7 +15,7 @@ class BaseParser
         first_name: row['first_name'],
         last_name: row['last_name'],
         city: row['city'],
-        birthdate: Date.parse(row['birthdate']),
+        birthdate: parse_date(row['birthdate']),
       )
     end
 
@@ -30,6 +30,12 @@ class BaseParser
       col_sep: " #{separator} ",
       headers: true,
     )
+  end
+
+  def parse_date(date)
+    return Date.strptime(date, '%m.%d.%Y') if /^\d{1,2}\.\d{1,2}\.\d{4}$/.match?(date)
+
+    Date.parse(date)
   end
 
   attr_reader :raw_data
